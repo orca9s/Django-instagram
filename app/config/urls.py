@@ -22,7 +22,7 @@ from config import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'posts', include('posts.urls')),
+    path('posts/', include('posts.urls')),
     path('', views.index),
     # path('media/<str:path>',),
 ] + static(
