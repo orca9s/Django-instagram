@@ -9,9 +9,17 @@
 </head>
 <body>
     <h1>Instagram</h1>
-    <div>
-
-    </div>
+    {{ user.is_authenticated }}
+{#    <div>#}
+{#        {% if user.is_authenticated %}#}
+{#        <form action="{% url 'members:logout' %}" method="POST">#}
+{#            {% csrf_token %}#}
+{#            <button type="submit">로그아웃하기</button>#}
+{#        </form>#}
+{#        {% else %}#}
+{#        <a href="{% url 'members:login' %}"><button>로그인</button></a>#}
+{#        {% endif %}#}
+{#    </div>#}
     {% block content %}
     {% endblock %}
 </body>

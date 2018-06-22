@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, logout
 from django.shortcuts import render, redirect
 
 
@@ -29,6 +29,14 @@ def login_view(request):
             return redirect('members:login')
     else:
         return render(request, 'members/login.html')
+
+
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('posts:post_list')
+    else:
+        return redirect('members:login')
 
     # 인증에 성공하면 posts:post-list로 이동
     # 실패하면 다시 memebers:login으로 이동
