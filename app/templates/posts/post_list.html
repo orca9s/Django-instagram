@@ -10,6 +10,7 @@
         </form>
         {% else %}
         <a href="{% url 'members:login' %}"><button>로그인</button></a>
+        <a href="{% url 'members:signup' %}"><button>회원가입 하기</button></a>
         {% endif %}
     </div>
 {% for post in posts %}

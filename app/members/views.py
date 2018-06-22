@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.views import login, logout
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 
@@ -40,3 +42,14 @@ def logout_view(request):
 
     # 인증에 성공하면 posts:post-list로 이동
     # 실패하면 다시 memebers:login으로 이동
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        User.objects.create_user(username=username, password=password)
+        return redirect('posts:post_list')
+    else:
+        return render(request, 'members/signup.html')
