@@ -26,6 +26,6 @@ urlpatterns = [
     path('', views.index),
     # path('media/<str:path>',),
 ] + static(
-    prefix='/media',
+    prefix=settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT,
 )
