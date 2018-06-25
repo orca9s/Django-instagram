@@ -1,8 +1,7 @@
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.models import User
 from django.contrib.auth.views import login, logout
-# from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from members.forms import SignupForm
 
 
 # User 클래스 자체를 가져올때는 get_user_model()
@@ -49,7 +48,42 @@ def logout_view(request):
     # 실패하면 다시 memebers:login으로 이동
 
 
-def signup_view(request):
+def signup(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        context = {
+            'form': form
+        }
+        # form에 들어있는 데이터가 유효한지 검사
+        if form.is_valid():
+            # 유효할 경우 유저 생성 및 redirect
+            # username존재하는지
+            # password, password2같은지
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            password2 = form.cleaned_data['password2']
+
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+            )
+            login(request, user)
+            return redirect('posts:post_list')
+        else:
+            return render(request, 'members/signup.html', context)
+        #     result = '\n'.join(['{}: {}'.format(key, value) for key, value in form.errors.items()])
+        #     # return HttpResponseRedirect(result)
+    else:
+        form = SignupForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'members/signup.html', context)
+
+
+def signup_bak(request):
     context = {
         'errors': [],
     }
@@ -58,6 +92,43 @@ def signup_view(request):
         email = request.POST['email']
         password = request.POST['password']
         password2 = request.POST['password2']
+
+        # for문으로 작동하도록 수정
+        # locals()
+
+        # 반드시 내용이 채워져야 하는 form의 필드 (위 변수명)
+        # hint : requeired_fields를 dict로
+        required_fields = ['username', 'email', 'password', 'password2']
+        required_fields = {
+            'username': {
+                'verbose_name': '아이디',
+            },
+            'email': {
+                'verbose_name': '이메일',
+            },
+            'password': {
+                'verbose_name': '비밀번호',
+            },
+            'password2': {
+                'verbose_name': '비밀번호 확인',
+            },
+        }
+        for field_name in required_fields.keys():
+            # print('field_name:', field_name)
+            # print('locals()[field_name]:', locals()[field_name])
+            if not locals()[field_name]:
+                context['errors'].append('{}을(를) 채워주세요'.format(
+                    required_fields[field_name]['verbose_name']
+                ))
+        # print(locals())
+        # if not username:
+        #     context['errors'].append('username을 채워주세요')
+        # if not email:
+        #     context['errors'].append('email을 채워주세요')
+        # if not password:
+        #     context['errors'].append('password를 채워주세요')
+        # if not password2:
+        #     context['errors'].append('password check를 채워주세요')
 
         # 입력 데이터 채워넣기
         context['username'] = username
@@ -70,7 +141,7 @@ def signup_view(request):
             #   'errors'키에 List를 할당하고, 해당 리스트에
             #   '유저가 이미 존재함' 문자열을 추가해서 전달
             #   템플릿에서든 전달받은 errors를 순회하며 에러메시지를 출력
-            context['errors'].append('유저가 이미 존재함')
+            context['errors'].append('이미 사용중인 아이디 입니다.')
         if password != password2:
             context['errors'].append('패스워드가 일치 하지 않음')
 
@@ -84,8 +155,8 @@ def signup_view(request):
             )
             return redirect('posts:post_list')
         else:
-            return render(request, 'members/signup.html', context)
-
+            return render(request, 'members/signup_bak.html', context)
+    return render(request, 'members/signup_bak.html')
 
 # def signup(request):
 #     if request.method == 'POST':

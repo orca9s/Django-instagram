@@ -6,11 +6,11 @@
         {% if user.is_authenticated %}
         <form action="{% url 'members:logout' %}" method="POST">
             {% csrf_token %}
-            <button type="submit">로그아웃하기</button>
+            <button type="submit" class="btn btn-danger">로그아웃하기</button>
         </form>
         {% else %}
-        <a href="{% url 'members:login' %}"><button>로그인</button></a>
-        <a href="{% url 'members:signup' %}"><button>회원가입 하기</button></a>
+        <a href="{% url 'members:login' %}"><button class="btn btn-primary" style="margin-left: 10px">로그인</button></a>
+        <a href="{% url 'members:signup' %}"><button class="btn btn-success" style="margin-left: 10px">회원가입 하기</button></a>
         {% endif %}
     </div>
 {% for post in posts %}
