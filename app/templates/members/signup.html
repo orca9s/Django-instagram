@@ -1,18 +1,19 @@
-<!doctype html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>sign_up</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+        {% if errors %}
+    <ul>
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <form action="{% url 'members:signup' %}" method="POST">
-        <input type="text" name="username">
         {% csrf_token %}
-        <input type="password" name="password">
+        <div><label>Username<input type="text" name="username" value="{{ username }}"></label></div>
+        <div><label>Email<input type="text" name="email" value="{{ email }}"></label></div>
+        <div><label>Password<input type="password" name="password"></label></div>
+        <div><label >Password check <input type="password" name="password2"></label></div>
         <button type="submit">가입하기</button>
     </form>
-</body>
-</html>
+{% endblock %}

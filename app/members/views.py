@@ -1,8 +1,13 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.views import login, logout
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
+
+# User 클래스 자체를 가져올때는 get_user_model()
+# Foreignkey에 User모델을 지정할때는 settings.AUTH_USER_MODEL
+User = get_user_model()
 
 
 def login_view(request):
@@ -45,11 +50,55 @@ def logout_view(request):
 
 
 def signup_view(request):
+    context = {
+        'errors': [],
+    }
     if request.method == 'POST':
         username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
+        password2 = request.POST['password2']
 
-        User.objects.create_user(username=username, password=password)
-        return redirect('posts:post_list')
-    else:
-        return render(request, 'members/signup.html')
+        # 입력 데이터 채워넣기
+        context['username'] = username
+        context['email'] = email
+
+        # form 에서 전송된 데이터들이 올바른지 검사
+        if User.objects.filter(username=username).exists():
+            # 단순 redirect가 아니라, render를 사용
+            # render에 context를 전달
+            #   'errors'키에 List를 할당하고, 해당 리스트에
+            #   '유저가 이미 존재함' 문자열을 추가해서 전달
+            #   템플릿에서든 전달받은 errors를 순회하며 에러메시지를 출력
+            context['errors'].append('유저가 이미 존재함')
+        if password != password2:
+            context['errors'].append('패스워드가 일치 하지 않음')
+
+        # errors가 존재하면 render
+        if not context['errors']:
+            # errors가 없으면 유저 생성 루틴 실행
+            User.objects.create_user(
+                username=username,
+                password=password,
+                email=email,
+            )
+            return redirect('posts:post_list')
+        else:
+            return render(request, 'members/signup.html', context)
+
+
+# def signup(request):
+#     if request.method == 'POST':
+#         # exists를 사용해서 유저가 이미 존재하면 signup으로 다시 redirect
+#         # 존재하지 않는 경우에만 아래 로직 실
+#         username = request.POST['username']
+#         password = request.POST['password']
+#
+#         user = User.objects.create_user(
+#             username=username,
+#             password=password,
+#         )
+#         print(request.user.is_autenticated)
+#         login(request, user)
+#         return redirect('index')
+#     return render(request, 'members/signup.html')
