@@ -1,6 +1,8 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+
+User = get_user_model()
 
 
 class SignupForm(forms.Form):
@@ -66,10 +68,6 @@ class SignupForm(forms.Form):
             password=password,
         )
         return user
-
-
-
-
 
     # 강사님이랑 하기전에 숙제로 한 부분
     # def clean_email(self):

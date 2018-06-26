@@ -4,9 +4,10 @@
 <h1>Post list</h1>
     <div>
         {% if user.is_authenticated %}
+            <a href="{% url 'posts:post_create' %}" class="btn btn-primary" style="margin-left: 10px">글 작성하기</a>
         <form action="{% url 'members:logout' %}" method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger" style="margin-left: 10px">로그아웃하기</button>
+            <button type="submit" class="btn btn-danger" style="margin-left: 10px">로그아웃</button>
         </form>
         {% else %}
         <a href="{% url 'members:login' %}"><button class="btn btn-primary" style="margin-left: 10px">로그인</button></a>
