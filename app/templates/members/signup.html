@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <div>
+    <h1>sign up</h1>
     <form action="" method="POST">
         {% csrf_token %}
+        {{ form.non_field_errors }}
         <table>
             {% for field in form %}
             <div class="form-group">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
+                {{ field.errors }}
             </div>
             {% endfor %}
         </table>
 
-        <button type="submit" class="btn btn-primary" style="margin-left: 10px">회원가입</button>
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px">가입하기</button>
     </form>
 
-    {{ form.errors }}
+
 </div>
 {% endblock %}

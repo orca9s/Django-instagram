@@ -51,36 +51,18 @@ def logout_view(request):
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
-        context = {
-            'form': form
-        }
         # form에 들어있는 데이터가 유효한지 검사
         if form.is_valid():
-            # 유효할 경우 유저 생성 및 redirect
-            # username존재하는지
-            # password, password2같은지
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            password2 = form.cleaned_data['password2']
-
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-            )
+            user = form.signup()
             login(request, user)
             return redirect('posts:post_list')
-        else:
-            return render(request, 'members/signup.html', context)
-        #     result = '\n'.join(['{}: {}'.format(key, value) for key, value in form.errors.items()])
-        #     # return HttpResponseRedirect(result)
     else:
         form = SignupForm()
-        context = {
-            'form': form,
-        }
-        return render(request, 'members/signup.html', context)
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'members/signup.html', context)
 
 
 def signup_bak(request):

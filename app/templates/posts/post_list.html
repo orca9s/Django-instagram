@@ -6,7 +6,7 @@
         {% if user.is_authenticated %}
         <form action="{% url 'members:logout' %}" method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">로그아웃하기</button>
+            <button type="submit" class="btn btn-danger" style="margin-left: 10px">로그아웃하기</button>
         </form>
         {% else %}
         <a href="{% url 'members:login' %}"><button class="btn btn-primary" style="margin-left: 10px">로그인</button></a>
