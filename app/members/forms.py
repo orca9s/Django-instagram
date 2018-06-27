@@ -6,6 +6,11 @@ User = get_user_model()
 
 
 class SignupForm(forms.Form):
+    CHOICES_GENDER = {
+        ('m', '남성'),
+        ('f', '여성'),
+        ('x', '선택안함'),
+    }
     username = forms.CharField(
         label='아이디',
         widget=forms.TextInput(
@@ -38,6 +43,38 @@ class SignupForm(forms.Form):
             }
         )
     )
+    site = forms.CharField(
+        label='사이트 주소',
+        required=False,
+        widget=forms.URLInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+    introduce = forms.CharField(
+        label='소개하기',
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+    gender = forms.ChoiceField(
+        label='성별',
+        required=False,
+        choices=CHOICES_GENDER,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+    img_profile = forms.ImageField(
+        label='프로필 사진',
+        required=False,
+    )
 
     def clean_username(self):
 
@@ -61,11 +98,20 @@ class SignupForm(forms.Form):
         email = self.cleaned_data['email']
         password = self.cleaned_data['password']
         password2 = self.cleaned_data['password2']
+        site = self.cleaned_data['site']
+        introduce = self.cleaned_data['introduce']
+        img_profile = self.cleaned_data['img_profile']
+        gender = self.cleaned_data['gender']
 
         user = User.objects.create_user(
             username=username,
             email=email,
             password=password,
+            site=site,
+            introduce=introduce,
+            img_profile=img_profile,
+            gender=gender,
+
         )
         return user
 
