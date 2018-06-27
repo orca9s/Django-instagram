@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h1>Post create</h1>
 <div>
-    <form action="" method="POST">
+    <h4>Post create</h4>
+    <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-
+        {{ form.non_field_errors }}
+        <table>
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+        </table>
+        <button type="submit" class="btn btn-primary btn-block">작성완료</button>
+        <button type="reset" class="btn btn-danger btn-block">초기화</button>
     </form>
 </div>
 {% endblock %}
