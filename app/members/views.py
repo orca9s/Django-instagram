@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login, logout
 from django.shortcuts import render, redirect
 from members.forms import SignupForm
@@ -140,6 +141,11 @@ def signup_bak(request):
             return render(request, 'members/signup_bak.html', context)
     return render(request, 'members/signup_bak.html')
 
+
+@login_required(login_url='index')
+def withdraw(request):
+    request.user.delete()
+    return redirect('index')
 # def signup(request):
 #     if request.method == 'POST':
 #         # exists를 사용해서 유저가 이미 존재하면 signup으로 다시 redirect
