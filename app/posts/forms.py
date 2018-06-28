@@ -1,6 +1,13 @@
 from django import forms
+from django.forms import ModelForm
 
 from posts.models import Post
+
+
+class PostModelForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = ['photo', 'content']
 
 
 class PostForm(forms.Form):
@@ -20,8 +27,9 @@ class PostForm(forms.Form):
     def post_create(self, user):
         content = self.cleaned_data['content']
         image = self.cleaned_data['image']
-        Post.objects.create(
+        post = Post.objects.create(
             author=user,
             photo=image,
             content=content,
         )
+        return post
