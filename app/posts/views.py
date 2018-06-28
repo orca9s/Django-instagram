@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from posts.forms import PostModelForm, PostForm
+from posts.forms import PostForm, PostModelForm
 from posts.models import Post
 
 
@@ -14,6 +14,8 @@ def post_list(request):
     context = {
         'posts': posts,
     }
+    # 포스트 리스트를 보여주는 함수 함수가 호출되면 포스트 리스트 페이지를
+    # context에 담아서 불러온다.
     return render(request, 'posts/post_list.html', context)
 
 
@@ -22,6 +24,8 @@ def post_detail(request, pk):
     context = {
         'post': post,
     }
+    # 포스트 디테일을 보여주는 함수이다. urls에서 호출을 하면
+    # context에 내용을 담아서 보내준다.
     return render(request, 'posts/post_detail.html', context)
 
 
@@ -42,16 +46,25 @@ def post_detail(request, pk):
 #     }
 #     return render(request, 'posts/post_create.html', context)
 
+# login_required는 로그인이 되어있을 때만 실행을 하게 한다.
 @login_required
 def post_create(request):
+    # 포스트 요청으로 들어올경우
     if request.method == 'POST':
         form = PostModelForm(request.POST, request.FILES)
+        # form에 들어있는 데이터가 유효한지 검사
+        # 유효성 검사 무엇을위한?
+        # 유효성 검사는 form에서 지정한 필드를 충족하는지 검사
         if form.is_valid():
             post = form.save(commit=False)
+            # post.author에다가 현재 로그인중인 user를 할당
             post.author = request.user
+            # 포스트를 저장
             post.save()
-            return redirect('posts:post_list')
+            # 글작성 완료후 디테일 페이지로 리턴
+            return redirect('posts:post_detail', pk=post.pk)
     else:
+        # 이 form에는 도대체 무엇을 담는것인가?
         form = PostModelForm()
     context = {
         'form': form

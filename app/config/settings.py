@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 print('BASE_DIR:', BASE_DIR)
 print('MEDIA_ROOT:', MEDIA_ROOT)
@@ -48,6 +49,8 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'members.User'
+
+LOGIN_URL = 'members:login'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

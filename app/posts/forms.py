@@ -7,6 +7,7 @@ from posts.models import Post
 class PostModelForm(ModelForm):
     class Meta:
         model = Post
+        # 리스트가 아니라 튜플형태로 적어도 된다()
         fields = ['photo', 'content']
 
 
