@@ -18,13 +18,19 @@
         </form>
         {% else %}
         <a href="{% url 'members:login' %}"><button class="btn btn-primary btn-block" style="margin-bottom: 10px">로그인</button></a>
-        <a href="{% url 'members:signup' %}"><button class="btn btn-info btn-block">회원가입 하기</button></a>
+        <a href="{% url 'members:signup' %}"><button class="btn btn-info btn-block" style="margin-bottom: 10px">회원가입 하기</button></a>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <a href="{% url 'posts:post_create' %}" class="btn btn-info btn-block" style="margin-bottom: 10px">글 작성하기</a>
+        </form>
         {% endif %}
     </div>
 {% for post in posts %}
     <div>
         <div>{{ post.author.username }}</div>
-        <div><a href="{% url 'posts:post_detail' post.pk %}"><img width="100%" src="{{ post.photo.url }}" alt=""></a></div>
+        {% if post.photo %}
+            <div><a href="{% url 'posts:post_detail' post.pk %}"><img width="100%" src="{{ post.photo.url }}" alt=""></a></div>
+        {% endif %}
     </div>
 {% endfor %}
 {% endblock %}

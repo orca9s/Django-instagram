@@ -7,7 +7,7 @@
     <div><img width="100%" src="{{ post.photo.url }}" alt=""></div>
     <form action="{%  url 'posts:delete' pk=post.pk %}" method="POST">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger btn-block">삭제</button>
+        <button type="submit" class="btn btn-danger btn-block" style="margin-top: 10px">삭제</button>
     </form>
 </div>
 {% endblock %}

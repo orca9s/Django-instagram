@@ -13,6 +13,7 @@
 
     {% if user.is_authenticated %}
     <h4>{{ user }}님 환영합니다.</h4>
+    {% endif %}
 {#    <div>#}
 {#        {% if user.is_authenticated %}#}
 {#        <form action="{% url 'members:logout' %}" method="POST">#}
@@ -23,7 +24,6 @@
 {#        <a href="{% url 'members:login' %}"><button>로그인</button></a>#}
 {#        {% endif %}#}
 {#    </div>#}
-    {% endif %}
     {% block content %}
     {% endblock %}
 </body>
