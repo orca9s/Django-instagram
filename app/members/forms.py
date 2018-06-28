@@ -94,42 +94,61 @@ class SignupForm(forms.Form):
         return self.cleaned_data
 
     def signup(self):
-        username = self.cleaned_data['username']
-        email = self.cleaned_data['email']
-        password = self.cleaned_data['password']
-        password2 = self.cleaned_data['password2']
-        site = self.cleaned_data['site']
-        introduce = self.cleaned_data['introduce']
-        img_profile = self.cleaned_data['img_profile']
-        gender = self.cleaned_data['gender']
+        fields = [
+            'username',
+            'email',
+            'password',
+            'gender',
+            'img_profile',
+            'introduce',
+            'site',
+        ]
+        create_user_dict = {}
+        for key, value in self.cleaned_data.items():
+            if key in fields:
+                create_user_dict[key] = value
+                print('success')
 
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            site=site,
-            introduce=introduce,
-            img_profile=img_profile,
-            gender=gender,
+        # dict comprehesion으로
+        create_user_dict = {key: value for key, value in self.cleaned_data.items() if key in fields}
 
-        )
+        # filter를 사용
+        def in_fields(item):
+            return item[0] in fields
+
+        result = filter(in_fields, self.cleaned_data.items())
+        for item in result:
+            create_user_dict[item[0]] = item[1]
+
+        # filter결과를 dict함수로 묶어서 새 dict생성
+        # 리스트 컴프리핸션으로 생성
+        create_user_dict = dict(filter(in_fields, self.cleaned_data.items()))
+
+        # 람다함수를 사용
+        create_user_dict = dict(filter(lambda item: item[0] in fields, self.cleaned_data.items()))
+
+        user = User.objects.create_user(**create_user_dict)
+
         return user
 
-    # 강사님이랑 하기전에 숙제로 한 부분
-    # def clean_email(self):
-    #
-    #     email = self.cleaned_data['email']
-    #     reputation = User.objects.filter(email=email).exists()
-    #
-    #     if reputation:
-    #         raise ValidationError('이미 사용중인 이메일입니다.')
-    #     return email
-    #
-    # def clean_password2(self):
-    #     password = self.cleaned_data['password']
-    #     password2 = self.cleaned_data['password2']
-    #
-    #     if password != password2:
-    #         print('비밀번호가 일치하지 않습니다.')
-    #         raise ValidationError('비밀번호가 일치하지 않습니다.')
-    #     return password
+        # 코드 줄이기 전에 사용했던 코드들
+        # username = self.cleaned_data['username']
+        # email = self.cleaned_data['email']
+        # password = self.cleaned_data['password']
+        # password2 = self.cleaned_data['password2']
+        # site = self.cleaned_data['site']
+        # introduce = self.cleaned_data['introduce']
+        # img_profile = self.cleaned_data['img_profile']
+        # gender = self.cleaned_data['gender']
+        #
+        # user = User.objects.create_user(
+        #     username=username,
+        #     email=email,
+        #     password=password,
+        #     site=site,
+        #     introduce=introduce,
+        #     img_profile=img_profile,
+        #     gender=gender,
+        #
+        # )
+        # return user

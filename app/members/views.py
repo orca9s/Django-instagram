@@ -11,6 +11,11 @@ User = get_user_model()
 
 
 def login_view(request):
+    # 1. POST요청이 왔는데, 요청이 올바르면서 <- 코드에서 어느 위치인지 파악
+    # 2. GET parameter에 'next값이 존재할 경우 <-- GET parameter는 requests.GET으로 접근
+    # 3. 해당 값(URL)으로 redirect <-redirect() 함수는 URL문자열로도 이동 가능
+    # 4. next값이 존재하지 않으면 원래 이동하던 곳으로 그대로 redirect <- 문자열이 있는지 없는지는 if로 판다.
+
     # 1. member.urls <-'members/'로 include 되도록 config.urls모듈에 추가
     # 2. path구현 (URL: '/membsers/login/')
     # 3. path와 이 view 연결
@@ -29,20 +34,40 @@ def login_view(request):
         if user is not None:
             # 세션값을 만들어 DB에 저장하고, HTTP response의 Cookie에 해당값을 담아보내도록 하는
             # login()함수를 실행한다
+
+            # session_id값을 djagno_sessions테이블에 저장, 데이터는 user와 연결됨
+            # 이 함수 실행 후 돌려줄 HTTP Response에는 Set-Cookie헤더를 추가, 내용은 sessionid=<session값>
             login(request, user)
+            # 이후 post-list로 redirect
+
+            # 만약에 사용자가 글쓰기 버튼을 통해 로그인을 하였을때 로그인 후 글쓰기 페이지로 보내주기
+            # 강사님이 작성한 코드
+            next = request.GET.get('next')
+            if next:
+                return redirect(next)
+
+            # 내가 작성한 코드
+            # if request.GET.get('next') == '/posts/create':
+            #     return redirect('posts:post_create')
             # 이후 post-list로
+
+            # 글쓰기 버튼 클릭으로 로그인 한게 아니라면 포스트 리스트로 보내주기
             return redirect('posts:post_list')
         else:
+            # 로그인 실패시 로그인 페이지로 다시 보내주기
             return redirect('members:login')
     else:
+        # get요청으로 들어왔을때 로그인 페이지로 보내주기
         return render(request, 'members/login.html')
 
 
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
+        # 로그인 상태에서 로그아웃 클릭시 포스트 리스트로 보내주기
         return redirect('posts:post_list')
     else:
+        # get요청으로 접근시 로그인 페이지로 보내주기
         return redirect('members:login')
 
     # 인증에 성공하면 posts:post-list로 이동
@@ -51,7 +76,7 @@ def logout_view(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = SignupForm(request.POST, request.FILES)
         # form에 들어있는 데이터가 유효한지 검사
         if form.is_valid():
             user = form.signup()
@@ -83,6 +108,9 @@ def signup_bak(request):
         # hint : requeired_fields를 dict로
         required_fields = ['username', 'email', 'password', 'password2']
         required_fields = {
+            # verbose_name은 사용자가 보았을때 알기쉽게 이름을 달아주는 것
+            # 단수형= verbose_name, 복수형 = verbose_name_plural
+            # verbose_name_plural옵션 대신에 verbose_name에 s 를 붙여줄 수 있다.
             'username': {
                 'verbose_name': '아이디',
             },
@@ -142,7 +170,7 @@ def signup_bak(request):
     return render(request, 'members/signup_bak.html')
 
 
-@login_required(login_url='index')
+@login_required
 def withdraw(request):
     request.user.delete()
     return redirect('index')
