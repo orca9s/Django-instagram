@@ -27,11 +27,11 @@
     </div>
 {% for post in posts %}
     <div>
-        <div><p class="form-control btn-outline-primary">{{ post.author.username }}</p></div>
+        <div style="float: left; margin-right: 5px; margin-top: 7px"><p>{{ post.author.username }}</p></div>
         <div>
             <form action="" method="POST">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline-primary">+ Follow</button>
+                <button type="submit" class="btn btn-outline-primary btn-sm" style="margin-top: 5px;">Follow</button>
             </form>
         </div>
         {% if post.photo %}

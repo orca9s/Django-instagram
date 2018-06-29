@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 from django.test import TransactionTestCase
 
-from members.exception import RelationNotExist
+from members.exception import RelationNotExist, DuplicateRelationException
 
 User = get_user_model()
 
@@ -11,6 +11,7 @@ class RelationTestCase(TransactionTestCase):
     def create_dummy_user(self, num):
         # num에 주어진 개수만큼 유저를 생성 및 리턴
         return [User.objects.create_user(username=f'u{x + 1}') for x in range(num)]
+
     def test_follow(self):
         """
         특정 User가 다른 User를 follow했을 경우, 정상 작동하는지 확인
@@ -43,7 +44,7 @@ class RelationTestCase(TransactionTestCase):
 
         # 두 번째 실행에서는 IntegrityError가 발생할 것이다.
         # iwth transaction.atomic():
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(DuplicateRelationException):
             u1.follow(u2)
 
         # u1의 following 이 하나인지 확인

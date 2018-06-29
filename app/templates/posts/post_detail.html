@@ -3,11 +3,26 @@
 {% block content %}
 <h4>Post detail</h4>
 <div>
-    <div>{{ post.author.username }}</div>
-    {% if post.photo %}
-    <div><img width="100%" src="{{ post.photo.url }}" alt=""></div>
-    {% endif %}
-    <p class="form-control">{{ post.content }}</p>
+    <div>
+        <div style="float: left; margin-right: 5px; margin-top: 2px"><p>{{ post.author.username }}</p></div>
+        <div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary btn-sm">Follow</button>
+            </form>
+        </div>
+        {% if post.photo %}
+            <div><a href="{% url 'posts:post_detail' post.pk %}"><img width="100%" src="{{ post.photo.url }}" alt=""></a></div>
+        {% endif %}
+    </div>
+    <form action="{% url 'posts:comment_create' pk=post.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Comment남기기" name="content">
+        <button type="submit" class="btn btn-success">댓글달기</button>
+    </form>
+    {% for comment in post.my_comments.all %}
+        <p>{{ comment.user }} :{{ comment.content }}</p>
+    {% endfor %}
     <form action="{%  url 'posts:delete' pk=post.pk %}" method="POST">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger btn-block" style="margin-top: 10px">삭제</button>

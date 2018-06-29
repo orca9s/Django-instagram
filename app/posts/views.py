@@ -84,18 +84,19 @@ def delete(request, pk):
             post.delete()
             return redirect('index')
         else:
-            raise PermissionDenied('지울 권환이 없습니다.')
+            raise PermissionDenied('지울 권한이 없습니다.')
     return HttpResponse('...')
 
 
+@login_required
 def comment_create(request, pk):
     if request.method == 'POST':
         post = Post.objects.get(pk=pk)
 
-        Comment.objects.get(
+        Comment.objects.create(
             post=post,
             user=request.user,
-            content=request.POST.get('comment')
+            content=request.POST.get('content')
         )
 
         return redirect('posts:post_detail', post.pk)

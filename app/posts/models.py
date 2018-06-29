@@ -32,8 +32,7 @@ class Comment(models.Model):
         related_name='my_users',
     )
 
-    content = models.TextField(null=True)
-
+    content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
