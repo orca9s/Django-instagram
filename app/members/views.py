@@ -174,6 +174,18 @@ def signup_bak(request):
 def withdraw(request):
     request.user.delete()
     return redirect('index')
+
+
+def follow_toggle(request):
+    """
+    GET요청은 처리하지 않음
+
+    POST요청일 때
+        1.request.POST로 'user_pk'값을 전달받음
+          pk가 user_pk인 User를 user에 할당
+        2.request.user의
+    """
+    pass
 # def signup(request):
 #     if request.method == 'POST':
 #         # exists를 사용해서 유저가 이미 존재하면 signup으로 다시 redirect

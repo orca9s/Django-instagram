@@ -27,7 +27,13 @@
     </div>
 {% for post in posts %}
     <div>
-        <div>{{ post.author.username }}</div>
+        <div><p class="form-control btn-outline-primary">{{ post.author.username }}</p></div>
+        <div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary">+ Follow</button>
+            </form>
+        </div>
         {% if post.photo %}
             <div><a href="{% url 'posts:post_detail' post.pk %}"><img width="100%" src="{{ post.photo.url }}" alt=""></a></div>
         {% endif %}

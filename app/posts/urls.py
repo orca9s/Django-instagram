@@ -13,4 +13,5 @@ urlpatterns = [
     path('create', views.post_create, name='post_create'),
     # 글삭제 기능을 호출한다.
     path('<int:pk>/delete/', views.delete, name='delete'),
+    path('<int:pk>/comment/', views.comment_create, name='comment_create'),
 ]

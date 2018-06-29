@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from posts.forms import PostForm, PostModelForm
-from posts.models import Post
+from posts.models import Post, Comment
 
 
 def post_list(request):
@@ -87,6 +87,19 @@ def delete(request, pk):
             raise PermissionDenied('지울 권환이 없습니다.')
     return HttpResponse('...')
 
+
+def comment_create(request, pk):
+    if request.method == 'POST':
+        post = Post.objects.get(pk=pk)
+
+        Comment.objects.get(
+            post=post,
+            user=request.user,
+            content=request.POST.get('comment')
+        )
+
+        return redirect('posts:post_detail', post.pk)
+    return render(request, 'posts/post_detail.html')
 # 데코레이터 안쓰고 delete기능 구현2
 # def delete(request, pk):
 #     if request.method != 'POST':
