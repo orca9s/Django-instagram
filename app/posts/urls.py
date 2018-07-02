@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from django.urls import path
 
+# 상대경로 방식
+# 풀네임을 다 써주면 절대경로
 from . import views
 
 app_name = 'posts'

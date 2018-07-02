@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 
+# 절대경로 방식
 from members.models import User
 
 
