@@ -12,6 +12,14 @@ class Post(models.Model):
     photo = models.ImageField(upload_to='post', blank=True)
     content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        # 1. related_name은 반대쪽(target)에서 이쪽(source)로의 연결을 만들어주는 Manager
+        # 2. 자신이 like_users에 포함이 되는 Post QuerySet Manager
+        # 3. -> 내가 좋아요 누른 Post목록
+        related_name='like_posts',
+    )
 
     # 기본값은 오름차순인데 -를 붙이면 내림차순으로 정렬이 된다.
     # ordering
