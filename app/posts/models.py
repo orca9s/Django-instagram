@@ -17,7 +17,7 @@ class Post(models.Model):
         blank=True,
         # 1. related_name은 반대쪽(target)에서 이쪽(source)로의 연결을 만들어주는 Manager
         # 2. 자신이 like_users에 포함이 되는 Post QuerySet Manager
-        # 3. -> 내가 좋아요 누른 Post목록
+        # 3. -> 내가 좋아요 누른 Post목
         related_name='like_posts',
     )
 
@@ -35,13 +35,21 @@ class Comment(models.Model):
     )
 
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='my_users',
     )
 
+    # parent_comment = models.ForeignKey(
+    #     'self',
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    # )
+
     content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    # modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.user} : {self.content}'

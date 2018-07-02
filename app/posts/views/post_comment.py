@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from posts.models import Post, Comment
+from ..models import Post, Comment
 
-__all__ =(
+__all__ = (
     'comment_create',
 )
 

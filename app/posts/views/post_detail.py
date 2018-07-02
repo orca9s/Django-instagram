@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from posts.models import Post
+from ..models import Post
 
 __all__ = (
     'post_detail',
