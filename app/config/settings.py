@@ -52,8 +52,12 @@ INSTALLED_APPS = [
     'django_extensions',
     'members.apps.MembersConfig',
 ]
-
+# Auth
 AUTH_USER_MODEL = 'members.User'
+AUTHENTICATION_BACKENDS = [
+	'django.contrib.auth.backends.ModelBackend',
+	'members.backends.FacebookBackend',
+]
 
 LOGIN_URL = 'members:login'
 
