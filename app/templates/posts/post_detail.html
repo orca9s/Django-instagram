@@ -13,6 +13,7 @@
         </div>
         {% if post.photo %}
             <div><a href="{% url 'posts:post_detail' post.pk %}"><img width="100%" src="{{ post.photo.url }}" alt=""></a></div>
+            <p class="form-control">{{ post.content }}</p>
         {% endif %}
     </div>
     <form action="{% url 'posts:comment_create' pk=post.pk %}" method="POST">
