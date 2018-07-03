@@ -107,9 +107,9 @@ class FacebookBackend:
             '''
             Facebook GraphAPI의 'User'에 해당하는 응답인 user_info로부터
             id, first_name, last_name, picture항목을 사용해서
-            Django의
-            :param user_info:
-            :return:
+            Django의 User를 가져오거나 없는경우 새로 만듬 (get_or_create)
+            :param user_info:Facebook GraphAPI - User의 응답
+            :return: get_or_create의 결과 tuple (User instance, Bool(created))
             '''
 
             # 받아온 정보 중 회원가입에 필요한 요소들 꺼내기
