@@ -19,12 +19,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from config import views
+from posts.apis import PostList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', include('posts.urls')),
     path('', views.index, name='index'),
     path('members/', include('members.urls')),
+    path('api/posts/', PostList.as_view(), name = 'post-list')
     # path('media/<str:path>',),
 ] + static(
     prefix=settings.MEDIA_URL,

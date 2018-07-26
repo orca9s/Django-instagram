@@ -41,6 +41,8 @@ FACEBOOK_APP_SECRET_CODE = '508c7dbaa4d5da8670cb7dcafb595d8e'
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    
     'posts.apps.PostsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
