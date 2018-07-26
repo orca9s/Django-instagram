@@ -17,3 +17,4 @@ class PostSerializer(serializers.ModelSerializer):
 			'created_at',
 			'like_users',
 		)
+
