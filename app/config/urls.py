@@ -27,8 +27,8 @@ urlpatterns = [
     path('posts/', include('posts.urls')),
     path('', views.index, name='index'),
     path('members/', include('members.urls')),
-    path('api/posts/', PostList.as_view(), name = 'post-list'),
-    path('api/users/', UserList.as_view(), name = 'user-list'),
+    path('api/posts/', PostList.as_view(), name='post-list'),
+    path('api/users/', UserList.as_view(), name='user-list'),
     # path('media/<str:path>',),
 ] + static(
     prefix=settings.MEDIA_URL,

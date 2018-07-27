@@ -5,7 +5,6 @@ from . post_delete import *
 from . post_comment import *
 
 
-
 # from django.contrib.auth import authenticate
 # from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.views import login
