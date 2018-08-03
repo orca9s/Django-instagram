@@ -1,5 +1,6 @@
 from django.urls import path
 
+from members import apis
 from .views import login_view, logout_view, signup, withdraw, facebook_login
 
 app_name = 'members'
@@ -13,5 +14,7 @@ urlpatterns = [
     # 회원탈퇴 버튼 클릭시 실행
     path('withdraw/', withdraw, name='withdraw'),
     # 페이스북 로그인
-    path('facebook-login/', facebook_login, name='facebook_login')
+    path('facebook-login/', facebook_login, name='facebook_login'),
+    # token
+    path('auth-token', apis.AuthToken.as_view())
 ]
